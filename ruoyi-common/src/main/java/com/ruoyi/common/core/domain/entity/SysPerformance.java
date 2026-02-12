@@ -31,11 +31,11 @@ public class SysPerformance extends BaseEntity
 
     /** 学生年级 */
     @Excel(name = "学生年级")
-    private Integer studentGrade;
+    private String studentGrade;
 
     /** 学生班级 */
     @Excel(name = "学生班级")
-    private Integer studentClass;
+    private String studentClass;
 
     /** 评价类型 */
     @Excel(name = "评价类型")
