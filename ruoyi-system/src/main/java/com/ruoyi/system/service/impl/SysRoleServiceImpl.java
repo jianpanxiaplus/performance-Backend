@@ -52,9 +52,9 @@ public class SysRoleServiceImpl implements ISysRoleService
      */
     @Override
     @DataScope(deptAlias = "d")
-    public List<SysRole> selectRoleList(SysRole role)
+    public List<SysRole> selectPerformanceList(SysRole role)
     {
-        return roleMapper.selectRoleList(role);
+        return roleMapper.selectPerformanceList(role);
     }
 
     /**
@@ -111,7 +111,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public List<SysRole> selectRoleAll()
     {
-        return SpringUtils.getAopProxy(this).selectRoleList(new SysRole());
+        return SpringUtils.getAopProxy(this).selectPerformanceList(new SysRole());
     }
 
     /**
@@ -121,9 +121,9 @@ public class SysRoleServiceImpl implements ISysRoleService
      * @return 选中角色ID列表
      */
     @Override
-    public List<Long> selectRoleListByUserId(Long userId)
+    public List<Long> selectPerformanceListByUserId(Long userId)
     {
-        return roleMapper.selectRoleListByUserId(userId);
+        return roleMapper.selectPerformanceListByUserId(userId);
     }
 
     /**
@@ -202,7 +202,7 @@ public class SysRoleServiceImpl implements ISysRoleService
             {
                 SysRole role = new SysRole();
                 role.setRoleId(roleId);
-                List<SysRole> roles = SpringUtils.getAopProxy(this).selectRoleList(role);
+                List<SysRole> roles = SpringUtils.getAopProxy(this).selectPerformanceList(role);
                 if (StringUtils.isEmpty(roles))
                 {
                     throw new ServiceException("没有权限访问角色数据！");

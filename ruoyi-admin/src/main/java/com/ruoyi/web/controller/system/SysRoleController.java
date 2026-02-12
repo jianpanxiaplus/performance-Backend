@@ -60,7 +60,7 @@ public class SysRoleController extends BaseController
     public TableDataInfo list(SysRole role)
     {
         startPage();
-        List<SysRole> list = roleService.selectRoleList(role);
+        List<SysRole> list = roleService.selectPerformanceList(role);
         return getDataTable(list);
     }
 
@@ -69,7 +69,7 @@ public class SysRoleController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysRole role)
     {
-        List<SysRole> list = roleService.selectRoleList(role);
+        List<SysRole> list = roleService.selectPerformanceList(role);
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
         util.exportExcel(response, list, "角色数据");
     }

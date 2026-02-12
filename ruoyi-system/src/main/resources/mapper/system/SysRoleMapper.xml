@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        left join sys_dept d on u.dept_id = d.dept_id
     </sql>
     
-    <select id="selectRoleList" parameterType="SysRole" resultMap="SysRoleResult">
+    <select id="selectPerformanceList" parameterType="SysRole" resultMap="SysRoleResult">
 		<include refid="selectRoleVo"/>
 		where r.del_flag = '0'
 		<if test="roleId != null and roleId != 0">
@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectRoleVo"/>
 	</select>
 	
-	<select id="selectRoleListByUserId" parameterType="Long" resultType="Long">
+	<select id="selectPerformanceListByUserId" parameterType="Long" resultType="Long">
 		select r.role_id
         from sys_role r
 	        left join sys_user_role ur on ur.role_id = r.role_id

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysPerformanceMapper">
+
+	<resultMap type="SysPerformance" id="SysPerformanceResult">
+		<id     property="pId"             column="p_id"               />
+		<id     property="studentId"             column="student_id"               />
+		<result property="studentName"           column="student_name"             />
+		<result property="studentGrade"            column="student_grade"              />
+		<result property="studentClass"           column="student_class"             />
+		<result property="evaluationType"          column="evaluation_type"            />
+		<result property="scoringItem"  column="scoring_item"   />
+		<result property="score"  column="score"   />
+		<result property="auditStatus"             column="audit_status"                />
+		<result property="delFlag"            column="del_flag"              />
+		<result property="createBy"           column="create_by"             />
+		<result property="createTime"         column="create_time"           />
+		<result property="updateBy"           column="update_by"             />
+		<result property="updateTime"         column="update_time"           />
+		<result property="remark"             column="remark"                />
+	</resultMap>
+	
+	<sql id="selectPerformanceVo">
+	    select p_id,student_id,student_name,student_grade,student_class,evaluation_type,scoring_item,score,audit_status,del_flag,create_by,create_time,update_by,update_time,remark
+        from sys_performance sp
+    </sql>
+    
+    <select id="selectPerformanceList" parameterType="SysPerformance" resultMap="SysPerformanceResult">
+		<include refid="selectPerformanceVo"/>
+		where sp.del_flag = '0'
+		<if test="studentName != null and studentName != ''">
+				AND sp.student_name like concat('%', #{studentName}, '%')
+		</if>
+		<if test="auditStatus != null and auditStatus != ''">
+			AND sp.audit_status = #{auditStatus}
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			and date_format(sp.create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			and date_format(sp.create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+		</if>
+		order by sp.create_time desc
+	</select>
+    
+
+	<select id="selectPerformanceById" parameterType="Long" resultMap="SysPerformanceResult">
+		<include refid="selectPerformanceVo"/>
+		where sp.p_id = #{pId}
+	</select>
+	
+	<select id="selectPerformancesByStudentName" parameterType="String" resultMap="SysPerformanceResult">
+		<include refid="selectPerformanceVo"/>
+		WHERE sp.del_flag = '0' and sp.student_name = #{studentName}
+	</select>
+	
+ 	<insert id="insertPerformance" parameterType="SysPerformance" useGeneratedKeys="true" keyProperty="pId">
+ 		insert into sys_performance(
+ 			<if test="pId != null and pId != 0">p_id,</if>
+ 			<if test="studentId != null">student_id,</if>
+ 			<if test="studentName != null and studentName != ''">student_name,</if>
+ 			<if test="studentGrade != null">student_grade,</if>
+ 			<if test="studentClass != null">student_class,</if>
+ 			<if test="evaluationType != null and evaluationType != ''">evaluation_type,</if>
+ 			<if test="scoringItem != null and scoringItem != ''">scoring_item,</if>
+ 			<if test="score != null">score,</if>
+ 			<if test="auditStatus != null and auditStatus != ''">audit_status,</if>
+ 			<if test="remark != null and remark != ''">remark,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+ 			<if test="pId != null and pId != 0">#{pId},</if>
+ 			<if test="studentId != null">#{studentId},</if>
+ 			<if test="studentName != null and studentName != ''">#{studentName},</if>
+ 			<if test="studentGrade != null">#{studentGrade},</if>
+ 			<if test="studentClass != null">#{studentClass},</if>
+ 			<if test="evaluationType != null and evaluationType != ''">#{evaluationType},</if>
+ 			<if test="scoringItem != null and scoringItem != ''">#{scoringItem},</if>
+ 			<if test="score != null">#{score},</if>
+ 			<if test="auditStatus != null and auditStatus != ''">#{auditStatus},</if>
+ 			<if test="remark != null and remark != ''">#{remark},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	
+	<update id="updatePerformance" parameterType="SysPerformance">
+ 		update sys_performance
+ 		<set>
+ 			<if test="studentId != null">student_id = #{studentId},</if>
+ 			<if test="studentName != null and studentName != ''">student_name = #{studentName},</if>
+ 			<if test="studentGrade != null">student_grade = #{studentGrade},</if>
+ 			<if test="studentClass != null">student_class = #{studentClass},</if>
+ 			<if test="evaluationType != null and evaluationType != ''">evaluation_type = #{evaluationType},</if>
+ 			<if test="scoringItem != null and scoringItem != ''">scoring_item = #{scoringItem},</if>
+ 			<if test="score != null">score = #{score},</if>
+ 			<if test="auditStatus != null and auditStatus != ''">audit_status = #{auditStatus},</if>
+ 			<if test="remark != null">remark = #{remark},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where p_id = #{pId}
+	</update>
+	
+	<delete id="deletePerformanceById" parameterType="Long">
+ 		update sys_performance set del_flag = '2' where p_id = #{pId}
+ 	</delete>
+ 	
+ 	<delete id="deletePerformanceByIds" parameterType="Long">
+ 	    update sys_performance set del_flag = '2' where p_id in
+ 		<foreach collection="array" item="pId" open="(" separator="," close=")">
+ 			#{roleId}
+        </foreach> 
+ 	</delete>
+ 	
+</mapper> 

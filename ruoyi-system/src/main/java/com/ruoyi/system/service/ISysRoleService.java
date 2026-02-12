@@ -18,7 +18,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    public List<SysRole> selectRoleList(SysRole role);
+    public List<SysRole> selectPerformanceList(SysRole role);
 
     /**
      * 根据用户ID查询角色列表
@@ -49,7 +49,7 @@ public interface ISysRoleService
      * @param userId 用户ID
      * @return 选中角色ID列表
      */
-    public List<Long> selectRoleListByUserId(Long userId);
+    public List<Long> selectPerformanceListByUserId(Long userId);
 
     /**
      * 通过角色ID查询角色
